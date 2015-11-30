@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Redux version of NewEdenFaces Tutorial",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MrRoyce/newedenredux-server.git"
+  },
   "scripts": {
     "start": "babel-node index.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive",
@@ -29,7 +33,9 @@
     ]
   },
   "dependencies": {
+    "async": "^1.5.0",
     "immutable": "^3.7.5",
+    "lodash": "^3.10.1",
     "mongoose": "^4.2.7",
     "redux": "^3.0.4",
     "socket.io": "^1.3.7"

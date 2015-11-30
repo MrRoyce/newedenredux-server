@@ -9,6 +9,7 @@ import Server from 'socket.io';
 export default function startServer (store) {
   const io = new Server().attach(8090);
 
+  console.log('Starting server on 8090');
   /*
    * We are now publishing the whole state
    * to everyone whenever any changes occur.
@@ -38,6 +39,7 @@ export default function startServer (store) {
 
   io.on('connection', (socket) => {
     // Send the current state to all new connections
+    console.log('new connection to server: ' + (new Date).toISOString().replace(/z|t/gi,' ').trim());
     socket.emit('state', store.getState().toJS());
 
     // Receive remote actions from clients (e.g. votes)

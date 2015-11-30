@@ -8,14 +8,38 @@ import {List, Map, fromJS} from 'immutable';
 
 export const INITIAL_STATE = Map();
 
+function randomIntFromInterval(min, max) {
+  /*console.log('min: ' + min);
+  console.log('max: ' + max);
+  console.log('val: ' + Math.floor(Math.random() * (max - min + 1) + min));*/
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 // Create the initial home page from an array of characters
 export function setEntries(state, entries) {
 
-  return state.set('top5Characters', List(entries).sort((a, b) => {
+  let
+    listEntries = List(entries.characters),
+    stats       = entries.stats,
+    males       = listEntries.filter(x => x.gender === 'Male'),
+    females     = listEntries.filter(x => x.gender === 'Female'),
+    taken;
+
+  //console.log('stats');  console.log(JSON.stringify(stats));
+
+  // Randomly show a male or female pair
+  if (Math.random() >= 0.5) {
+    taken = males.skip(randomIntFromInterval(0, (males.size - 2.0))).take(2);
+  } else {
+    taken = females.skip(randomIntFromInterval(0, (females.size - 2.0))).take(2);
+  }
+  return state.set('top5Characters', listEntries.sort((a, b) => {
     return b.wins - a.wins;  // Sort descending by wins
   }).take(5)
-  ).set('numCharacters', List(entries).size)
-   .set('vote', List(entries).take(2))
+  ).set('numCharacters', listEntries.size)
+   .set('pair', taken)
+   .set('characters', listEntries)  // return all the entries
+   .set('stats', stats)  // return all the entries
   ;
 
 }
@@ -33,7 +57,7 @@ export function setLeaderBoard(state, entries) {
 export function nextPair(state) {
   const entries = state.get('entries');
   return state.merge({
-    vote: Map({pair: entries.take(2)}),
+    pair: entries.take(2),
     entries: entries.skip(2)
   });
 }

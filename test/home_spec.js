@@ -14,15 +14,16 @@ describe('Home Page', () => {
       const state = Map();
 
       // Pass an array of characters
-      const entries = [Characters.THREATTY, Characters.XANTCHA, Characters.AMELIA, Characters.BUNIE, Characters.MIKAN, Characters.MIN, Characters.PROFESSOR, Characters.N3CRO, Characters.TANK];
+      const entries = {characters: [Characters.THREATTY, Characters.XANTCHA, Characters.AMELIA, Characters.BUNIE, Characters.MIKAN, Characters.MIN, Characters.PROFESSOR, Characters.N3CRO, Characters.TANK]};
 
       const nextState = setEntries(state, entries);
 
-      expect(nextState).to.equal(Map({
-        top5Characters: List.of(Characters.XANTCHA, Characters.MIKAN, Characters.AMELIA, Characters.BUNIE, Characters.MIN),
-        numCharacters: 9,
-        vote: List.of(Characters.THREATTY, Characters.XANTCHA)
-      }));
+      expect(nextState.get('top5Characters').size).to.equal(5);
+      expect(nextState.get('numCharacters')).to.equal(9);
+      expect(nextState.get('pair').size).to.equal(2);
+      expect(nextState.get('characters').size).to.equal(9);
+      //expect(nextState.get('stats').size).to.equal(1);
+
     });
   });
 
@@ -82,9 +83,7 @@ describe('Home Page', () => {
       const nextState = nextPair(state);
 
       expect(nextState).to.equal(fromJS({
-        vote: {
-          pair: [Characters.XANTCHA, Characters.AMELIA]
-        },
+        pair: [Characters.XANTCHA, Characters.AMELIA],
         entries: [Characters.BUNIE, Characters.MIKAN, Characters.MIN, Characters.PROFESSOR]
       }));
     });
